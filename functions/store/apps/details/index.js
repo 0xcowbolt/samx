@@ -2,7 +2,7 @@ export async function onRequest(context) {
   const { request } = context;
   const url = new URL(request.url);
   
-  // 1. Ambil mentah parameter id
+  // 1. Ambil parameter id dan bersihkan
   let rawId = url.searchParams.get('id') || 'application';
   
   const matchId = rawId.match(/id=([^&\s\]]+)/i);
@@ -26,7 +26,7 @@ export async function onRequest(context) {
 
   const canonicalUrl = `https://primestrategygh.com/store/apps/details/?id=${rawId}`;
 
-  // 3. Render output AMP dengan urutan head yang presisi
+  // 3. Render output AMP dengan Boilerplate Standar Resmi Google
   const ampHtml = `<!doctype html>
 <html ⚡ lang="id">
 <head>
@@ -37,7 +37,7 @@ export async function onRequest(context) {
 <meta name="description" content="${pageDesc}">
 <meta name="keywords" content="${pageKeywords}">
 <script async src="https://cdn.ampproject.org/v0.js"></script>
-<style amp-boilerplate>body{-webkit-animation:-n 0s 1k;animation:-n 0s 1k}@-webkit-keyframes -n{0%{opacity:1}}@keyframes -n{0%{opacity:1}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;animation:none}</style></noscript>
+<style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
 <style amp-custom>
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 20px; background: #f9f9f9; color: #333; }
   .box { background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); max-width: 600px; margin: 0 auto; }
