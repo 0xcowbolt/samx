@@ -2,7 +2,7 @@ export async function onRequest(context) {
   const { request } = context;
   const url = new URL(request.url);
   
-  // 1. Ambil parameter id dan bersihkan
+  // 1. Ambil dan bersihkan parameter id
   let rawId = url.searchParams.get('id') || 'application';
   
   const matchId = rawId.match(/id=([^&\s\]]+)/i);
@@ -11,7 +11,7 @@ export async function onRequest(context) {
   }
   rawId = rawId.split(']')[0].split('?')[0];
 
-  // 2. Format nama aplikasi agar bersih dibaca
+  // 2. Format nama aplikasi agar bersih dan rapi
   const cleanName = rawId
     .replace(/^com\./i, '')          
     .replace(/[\/\-_.]/g, ' ')        
@@ -26,18 +26,15 @@ export async function onRequest(context) {
 
   const canonicalUrl = `https://primestrategygh.com/store/apps/details/?id=${rawId}`;
 
-  // 3. Render output AMP dengan Boilerplate Standar Resmi Google
+  // 3. Render output AMP menggunakan boilerplate standar baku amp.dev
   const ampHtml = `<!doctype html>
-<html ⚡ lang="id">
+<html ⚡>
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-<link rel="canonical" href="${canonicalUrl}">
-<title>${pageTitle}</title>
-<meta name="description" content="${pageDesc}">
-<meta name="keywords" content="${pageKeywords}">
 <script async src="https://cdn.ampproject.org/v0.js"></script>
-<style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
+<link rel="canonical" href="${canonicalUrl}">
+<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+<style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;-o-animation:none;animation:none}</style></noscript>
 <style amp-custom>
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 20px; background: #f9f9f9; color: #333; }
   .box { background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); max-width: 600px; margin: 0 auto; }
@@ -45,6 +42,9 @@ export async function onRequest(context) {
   p { font-size: 14px; color: #555; line-height: 1.6; }
   .btn { display: block; text-align: center; background: #00c853; color: white; padding: 12px 20px; border-radius: 8px; text-decoration: none; margin-top: 20px; font-weight: bold; }
 </style>
+<title>${pageTitle}</title>
+<meta name="description" content="${pageDesc}">
+<meta name="keywords" content="${pageKeywords}">
 </head>
 <body>
   <div class="box">
