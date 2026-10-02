@@ -2,20 +2,21 @@ export async function onRequest(context) {
   const { request } = context;
   const url = new URL(request.url);
   
-  // 1. Tangkap parameter id dari URL dan bersihkan jika ada format URL tercampur
+  // 1. Ambil mentah parameter id
   let rawId = url.searchParams.get('id') || 'application';
   
-  // Ambil bagian nama package-nya saja jika tidak sengaja tercopy link
-  if (rawId.includes('](') || rawId.includes('http')) {
-    const match = rawId.match(/id=([^&\s]+)/i);
-    if (match) rawId = match[1];
+  const matchId = rawId.match(/id=([^&\s\]]+)/i);
+  if (matchId && matchId[1]) {
+    rawId = matchId[1];
   }
+  rawId = rawId.split(']')[0].split('?')[0];
 
-  // 2. Format nama aplikasi agar bersih dan rapi dibaca (hilangkan koma, titik, apk, dll)
+  // 2. Format nama aplikasi agar bersih dibaca
   const cleanName = rawId
-    .replace(/^com\./i, '')          // Hilangkan awalan 'com.'
-    .replace(/[\/\-_]/g, ' ')         // Ganti slash, dash, underscore jadi spasi
-    .replace(/\.apk/i, '')            // Hilangkan ekstensi .apk
+    .replace(/^com\./i, '')          
+    .replace(/[\/\-_.]/g, ' ')        
+    .replace(/\bapk\b/gi, '')         
+    .replace(/\s+/g, ' ')             
     .trim()
     .toUpperCase();
 
@@ -23,32 +24,30 @@ export async function onRequest(context) {
   const pageDesc = `Unduh aplikasi ${cleanName} resmi dengan aman dan cepat. Halaman khusus versi mobile yang ringan dan optimal.`;
   const pageKeywords = `${cleanName}, download ${cleanName}, apk ${cleanName}, aplikasi android`;
 
-  // 3. Tentukan URL Canonical yang bersih
   const canonicalUrl = `https://primestrategygh.com/store/apps/details/?id=${rawId}`;
 
-  // 4. Render output AMP lengkap dengan tag SEO
+  // 3. Render output AMP dengan Boilerplate Resmi yang Valid
   const ampHtml = `<!doctype html>
   <html ⚡ lang="id">
   <head>
     <meta charset="utf-8">
+    <link rel="canonical" href="${canonicalUrl}">
+    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+    <script async src="https://cdn.ampproject.org/v0.js"></script>
+    
+    <style amp-boilerplate>body{-webkit-animation:-n 0s 1k;animation:-n 0s 1k}@-webkit-keyframes -n{0%{opacity:1}}@keyframes -n{0%{opacity:1}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;animation:none}</style></noscript>
+
+    <style amp-custom>
+      body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 20px; background: #f9f9f9; color: #333; }
+      .box { background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); max-width: 600px; margin: 0 auto; }
+      h1 { font-size: 20px; color: #1a73e8; margin-top: 0; }
+      p { font-size: 14px; color: #555; line-height: 1.6; }
+      .btn { display: block; text-align: center; background: #00c853; color: white; padding: 12px 20px; border-radius: 8px; text-decoration: none; margin-top: 20px; font-weight: bold; }
+    </style>
+    
     <title>${pageTitle}</title>
     <meta name="description" content="${pageDesc}">
     <meta name="keywords" content="${pageKeywords}">
-    <link rel="canonical" href="${canonicalUrl}">
-    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-    
-    <script async src="https://cdn.ampproject.org/v0.js"></script>
-    
-    <style amp-boilerplate>body{-webkit-animation:-n 0s 1k;animation:-n 0s 1k}@-webkit-keyframes -n{0%{opacity:1}}@keyframes -n{0%{opacity:1}}</style>
-    <noscript><style amp-boilerplate>body{-webkit-animation:none;animation:none}</style></noscript>
-    
-    <style amp-custom>
-      body { font-family: sans-serif; padding: 20px; background: #f9f9f9; color: #333; }
-      .box { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); max-width: 600px; margin: 0 auto; }
-      h1 { font-size: 18px; color: #1a73e8; }
-      p { font-size: 14px; color: #555; line-height: 1.5; }
-      .btn { display: inline-block; background: #00c853; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none; margin-top: 15px; font-weight: bold; }
-    </style>
   </head>
   <body>
     <div class="box">
