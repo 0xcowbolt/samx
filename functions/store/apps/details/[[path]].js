@@ -11,6 +11,8 @@ export async function onRequest(context) {
     rawId = parts.length > 0 ? parts[parts.length - 1] : '';
   }
 
+  rawId = decodeURIComponent(rawId.replace(/\+/g, ' '));
+
   const mainDomain = 'https://spin8vip.top';
 
   if (!rawId || rawId.toLowerCase() === 'amp' || rawId.endsWith('.php')) {
