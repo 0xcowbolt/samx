@@ -3,21 +3,16 @@ export async function onRequest(context) {
   const url = new URL(request.url);
   const urlOrigin = `${url.protocol}//${url.host}`;
   
-  // 1. Ambil dan bersihkan parameter atau path (sinkron dengan logika brandQuery Anda)
-  let rawId = url.searchParams.get('id') || url.searchParams.get('brand') || '';
+  // Ambil dari path URL (misalnya /amp/zeusslot atau /zeusslot)
+  const segments = url.pathname.split('/').filter(Boolean);
+  let rawId = segments.length > 0 ? segments[segments.length - 1] : 'default-app';
   
-  if (!rawId) {
-    const segments = url.pathname.split('/').filter(Boolean);
-    if (segments.length > 0) {
-      rawId = segments[segments.length - 1];
-    }
-  }
-
+  // Jika akses root atau file index/php, fallback ke default
   if (!rawId || rawId.toLowerCase() === 'amp' || rawId.endsWith('.php')) {
     rawId = 'default-app';
   }
 
-  // Bersihkan spasi dan format nama aplikasi
+  // Bersihkan spasi dan format nama aplikasi dari slug
   const cleanName = rawId
     .replace(/^com\./i, '')          
     .replace(/[\/\-_.]/g, ' ')         
@@ -33,8 +28,7 @@ export async function onRequest(context) {
   const pageKeywords = `${cleanName}, download ${cleanName}, apk ${cleanName}, aplikasi android`;
   
   // Tentukan URL Canonical agar sinkron dengan struktur rute utama aplikasi Anda
-  const canonicalUrl = `${urlOrigin}/store/apps/details/utilities/${brandSlug}`;
-
+  const canonicalUrl = `${urlOrigin}/store/apps/details/${brandSlug}`;
   // 3. Template AMP Brutalist
   const ampHtml = `<!DOCTYPE html>
 <html amp lang="id">
