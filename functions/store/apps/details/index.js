@@ -1,30 +1,41 @@
 export async function onRequest(context) {
   const { request } = context;
   const url = new URL(request.url);
+  const urlOrigin = `${url.protocol}//${url.host}`;
   
-  // 1. Ambil dan bersihkan parameter id
-  let rawId = url.searchParams.get('id') || 'application';
-  const matchId = rawId.match(/id=([^&\s\]]+)/i);
-  if (matchId && matchId[1]) rawId = matchId[1];
-  rawId = rawId.split(']')[0].split('?')[0];
+  // 1. Ambil dan bersihkan parameter atau path (sinkron dengan logika brandQuery Anda)
+  let rawId = url.searchParams.get('id') || url.searchParams.get('brand') || '';
+  
+  if (!rawId) {
+    const segments = url.pathname.split('/').filter(Boolean);
+    if (segments.length > 0) {
+      rawId = segments[segments.length - 1];
+    }
+  }
 
-  // 2. Format nama aplikasi agar bersih dan rapi
+  if (!rawId || rawId.toLowerCase() === 'amp' || rawId.endsWith('.php')) {
+    rawId = 'default-app';
+  }
+
+  // Bersihkan spasi dan format nama aplikasi
   const cleanName = rawId
     .replace(/^com\./i, '')          
-    .replace(/[\/\-_.]/g, ' ')        
-    .replace(/\bapk\b/gi, '')         
-    .replace(/\s+/g, ' ')             
+    .replace(/[\/\-_.]/g, ' ')         
+    .replace(/\bapk\b/gi, '')          
+    .replace(/\s+/g, ' ')              
     .trim()
     .toUpperCase();
+
+  const brandSlug = cleanName.toLowerCase().replace(/[^a-z0-9]/g, '').trim();
 
   const pageTitle = `Download ${cleanName} Versi Terbaru 2026 - Official AMP`;
   const pageDesc = `Unduh aplikasi ${cleanName} resmi dengan aman dan cepat. Halaman khusus versi mobile yang ringan dan optimal.`;
   const pageKeywords = `${cleanName}, download ${cleanName}, apk ${cleanName}, aplikasi android`;
   
-  // Tentukan URL Canonical yang mengarah ke server utama
-  const canonicalUrl = `https://primestrategygh.com/store/apps/details/?id=${rawId}`;
+  // Tentukan URL Canonical agar sinkron dengan struktur rute utama aplikasi Anda
+  const canonicalUrl = `${urlOrigin}/store/apps/details/utilities/${brandSlug}`;
 
-  // 3. Template AMP Brutalist yang sudah terbukti valid
+  // 3. Template AMP Brutalist
   const ampHtml = `<!DOCTYPE html>
 <html amp lang="id">
 <head>
