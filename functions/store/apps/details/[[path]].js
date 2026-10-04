@@ -177,18 +177,18 @@ export async function onRequest(context) {
         </a>
       </header>
       <main>
-        <a class="btn login" href="${actionUrl}" target="_blank" rel="noopener">DAFTAR</a>
+        <a class="btn login" href="${actionUrl}" target="_blank" rel="noopener">DAFTAR ${cleanName}</a>
         <a class="btn daftar" href="${actionUrl}" target="_blank" rel="noopener">LOGIN ${cleanName}</a>
-        <a class="btn bonus" href="${actionUrl}" target="_blank" rel="noopener">LIVECHAT</a>
+        <a class="btn bonus" href="${actionUrl}" target="_blank" rel="noopener">LIVECHAT ${cleanName}</a>
       </main>
       <div class="divider"></div>
       <div class="welcome">
         <div class="split-text">
-          <p>O</p><p>F</p><p>F</p><p>I</p><p>C</p><p>I</p><p>A</p><p>L</p><p class="space"></p><p>A</p><p>M</p><p>P</p>
+          <p>S</p><p>L</p><p>O</p><p>T</p><p class="space"></p><p>G</p><p>A</p><p>C</p><p>O</p><p>R</p>
         </div>
       </div>
       <div class="marquee-container">
-        <div class="marquee-text">/// OFFICIAL STORE /// FAST & SECURE /// MOBILE OPTIMIZED ///</div>
+        <div class="marquee-text">/// PLATFORM RESMI /// FAST & SECURE /// ${cleanName} OPTIMIZED ///</div>
       </div>
     </div>
     <div class="footer">
