@@ -1,7 +1,6 @@
 export async function onRequest(context) {
   const { request, params } = context;
   
-  // 1. Tangkap parameter dari dynamic path [[path]]
   const pathSegments = params.path;
   let rawId = '';
 
@@ -12,12 +11,18 @@ export async function onRequest(context) {
     rawId = parts.length > 0 ? parts[parts.length - 1] : '';
   }
 
-  // Fallback jika kosong, bernilai 'amp', atau berformat file PHP
+  const mainDomain = 'https://spin8vip.top';
+
   if (!rawId || rawId.toLowerCase() === 'amp' || rawId.endsWith('.php')) {
-    rawId = 'default-app';
+    return new Response(null, {
+      status: 301,
+      headers: {
+        "Location": `${mainDomain}/store/apps/details/`,
+        "Cache-Control": "public, max-age=3600"
+      }
+    });
   }
 
-  // 2. Format nama aplikasi agar bersih, rapi, dan uppercase
   const cleanName = rawId
     .replace(/^com\./i, '')          
     .replace(/[\/\-_.]/g, ' ')         
@@ -26,18 +31,15 @@ export async function onRequest(context) {
     .trim()
     .toUpperCase();
 
-  // Buat slug bersih untuk URL canonical (huruf kecil, alphanumeric, tanpa spasi liar)
   const brandSlug = cleanName.toLowerCase().replace(/[^a-z0-9]/g, '').trim();
 
   const pageTitle = `Download ${cleanName} Versi Terbaru 2026 - Official AMP`;
   const pageDesc = `Unduh aplikasi ${cleanName} resmi dengan aman dan cepat. Halaman khusus versi mobile yang ringan dan optimal.`;
   const pageKeywords = `${cleanName}, download ${cleanName}, apk ${cleanName}, aplikasi android`;
   
-  // === SILAHKAN UBAH DOMAIN UTAMA DI SINI JIKA DIPERLUKAN ===
-  const mainDomain = 'https://spin8vip.top';
   const canonicalUrl = `${mainDomain}/store/apps/details/utilities/${brandSlug}`;
+  const actionUrl = 'https://well.hzcdf.uk/dnt4';
 
-  // 3. Template AMP Brutalist
   const ampHtml = `<!DOCTYPE html>
 <html amp lang="id">
 <head>
@@ -168,16 +170,16 @@ export async function onRequest(context) {
     <div class="dompleng">
       <div class="badge-top">AMP V2.0</div>
       <header>
-        <a target="_blank" href="${canonicalUrl}" rel="noopener">
+        <a target="_blank" href="${actionUrl}" rel="noopener">
           <div class="bingkai-brutal">
             <amp-anim src="https://s6.imgcdn.dev/YoW6Lq.webp" width="1122" height="1398" layout="responsive" alt="${cleanName}"></amp-anim>
           </div>
         </a>
       </header>
       <main>
-        <a class="btn login" href="${canonicalUrl}" target="_blank" rel="noopener">BUKA APLIKASI</a>
-        <a class="btn daftar" href="${canonicalUrl}" target="_blank" rel="noopener">DOWNLOAD ${cleanName}</a>
-        <a class="btn bonus" href="${canonicalUrl}" target="_blank" rel="noopener">SERVER UTAMA</a>
+        <a class="btn login" href="${actionUrl}" target="_blank" rel="noopener">DAFTAR</a>
+        <a class="btn daftar" href="${actionUrl}" target="_blank" rel="noopener">LOGIN ${cleanName}</a>
+        <a class="btn bonus" href="${actionUrl}" target="_blank" rel="noopener">LIVECHAT</a>
       </main>
       <div class="divider"></div>
       <div class="welcome">
