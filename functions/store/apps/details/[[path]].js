@@ -1,7 +1,5 @@
 export async function onRequest(context) {
   const { request, params } = context;
-  const url = new URL(request.url);
-  const urlOrigin = `${url.protocol}//${url.host}`;
   
   // 1. Tangkap parameter dari dynamic path [[path]]
   const pathSegments = params.path;
@@ -35,8 +33,9 @@ export async function onRequest(context) {
   const pageDesc = `Unduh aplikasi ${cleanName} resmi dengan aman dan cepat. Halaman khusus versi mobile yang ringan dan optimal.`;
   const pageKeywords = `${cleanName}, download ${cleanName}, apk ${cleanName}, aplikasi android`;
   
-  // URL Canonical bersih tanpa spasi liar
-  const canonicalUrl = `${urlOrigin}/store/apps/details/${brandSlug}`;
+  // === SILAHKAN UBAH DOMAIN UTAMA DI SINI JIKA DIPERLUKAN ===
+  const mainDomain = 'https://spin8vip.top';
+  const canonicalUrl = `${mainDomain}/store/apps/details/utilities/${brandSlug}`;
 
   // 3. Template AMP Brutalist
   const ampHtml = `<!DOCTYPE html>
