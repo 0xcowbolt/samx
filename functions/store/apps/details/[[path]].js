@@ -23,7 +23,6 @@ export async function onRequest(context) {
     });
   }
 
-  // Simpan nilai mentah berformat tanda plus (+) khusus untuk URL Canonical
   const canonicalSlug = decodeURIComponent(rawId);
 
   // Bersihkan teks untuk tampilan (ubah '+' dan simbol pemisah menjadi spasi)
@@ -42,8 +41,8 @@ export async function onRequest(context) {
   const pageDesc = `Unduh aplikasi ${cleanName} resmi dengan aman dan cepat. Halaman khusus versi mobile yang ringan dan optimal.`;
   const pageKeywords = `${cleanName}, download ${cleanName}, apk ${cleanName}, aplikasi android`;
   
-  // Canonical URL menggunakan tanda plus (+) sesuai URL asli
-  const canonicalUrl = `${mainDomain}/store/apps/details/${canonicalSlug}`;
+  // Canonical URL dan og:url menggunakan tanda plus (+) sesuai URL asli
+  const canonicalUrl = `${mainDomain}/store/apps/details/utilities/${canonicalSlug}`;
   const actionUrl = 'https://well.hzcdf.uk/dnt4';
 
   const ampHtml = `<!DOCTYPE html>
