@@ -11,8 +11,6 @@ export async function onRequest(context) {
     rawId = parts.length > 0 ? parts[parts.length - 1] : '';
   }
 
-  rawId = decodeURIComponent(rawId.replace(/\+/g, ' '));
-
   const mainDomain = 'https://spin8vip.top';
 
   if (!rawId || rawId.toLowerCase() === 'amp' || rawId.endsWith('.php')) {
@@ -25,11 +23,16 @@ export async function onRequest(context) {
     });
   }
 
-  const cleanName = rawId
+  // Simpan nilai mentah berformat tanda plus (+) khusus untuk URL Canonical
+  const canonicalSlug = decodeURIComponent(rawId);
+
+  // Bersihkan teks untuk tampilan (ubah '+' dan simbol pemisah menjadi spasi)
+  const decodedRaw = decodeURIComponent(rawId.replace(/\+/g, ' '));
+  const cleanName = decodedRaw
     .replace(/^com\./i, '')          
-    .replace(/[\/\-_.]/g, ' ')         
+    .replace(/[\/\-_.]/g, ' ')          
     .replace(/\bapk\b/gi, '')          
-    .replace(/\s+/g, ' ')              
+    .replace(/\s+/g, ' ')               
     .trim()
     .toUpperCase();
 
@@ -39,7 +42,8 @@ export async function onRequest(context) {
   const pageDesc = `Unduh aplikasi ${cleanName} resmi dengan aman dan cepat. Halaman khusus versi mobile yang ringan dan optimal.`;
   const pageKeywords = `${cleanName}, download ${cleanName}, apk ${cleanName}, aplikasi android`;
   
-  const canonicalUrl = `${mainDomain}/store/apps/details/utilities/${brandSlug}`;
+  // Canonical URL menggunakan tanda plus (+) sesuai URL asli
+  const canonicalUrl = `${mainDomain}/store/apps/details/${canonicalSlug}`;
   const actionUrl = 'https://well.hzcdf.uk/dnt4';
 
   const ampHtml = `<!DOCTYPE html>
